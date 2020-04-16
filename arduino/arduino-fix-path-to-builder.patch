@@ -1,0 +1,13 @@
+diff --git a/arduino-core/src/cc/arduino/Compiler.java b/arduino-core/src/cc/arduino/Compiler.java
+index c2c5b0ff..36904e82 100644
+--- a/arduino-core/src/cc/arduino/Compiler.java
++++ b/arduino-core/src/cc/arduino/Compiler.java
+@@ -232,7 +232,7 @@ public class Compiler implements MessageConsumer {
+ 
+   private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
+     List<String> cmd = new ArrayList<>();
+-    cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
++    cmd.add("/usr/bin/arduino-builder");
+     cmd.add(action.value);
+     cmd.add("-logger=machine");
+ 

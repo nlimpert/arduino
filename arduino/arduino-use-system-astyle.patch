@@ -1,0 +1,72 @@
+diff --git a/app/src/cc/arduino/packages/formatter/AStyleInterface.java b/app/src/cc/arduino/packages/formatter/AStyleInterface.java
+index 4224bf16..96ffbda5 100644
+--- a/app/src/cc/arduino/packages/formatter/AStyleInterface.java
++++ b/app/src/cc/arduino/packages/formatter/AStyleInterface.java
+@@ -41,7 +41,11 @@ public class AStyleInterface {
+       loadLib(Base.getContentFile(System.mapLibraryName("msvcp100")));
+       loadLib(Base.getContentFile(System.mapLibraryName("msvcr100")));
+     }
+-    loadLib(new File(Base.getContentFile("lib"), System.mapLibraryName("astylej")));
++    File astyleLib = new File("/usr/lib64/libastyle.so.3");
++    if (! astyleLib.exists()) {
++      astyleLib = new File("/usr/lib/libastyle.so.3");
++    }
++    loadLib(astyleLib);
+   }
+ 
+   private static void loadLib(File lib) {
+diff --git a/build/build.xml b/build/build.xml
+index 6ddec060..a3bfcf29 100644
+--- a/build/build.xml
++++ b/build/build.xml
+@@ -656,14 +656,14 @@
+   </target>
+ 
+   <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
+-    <antcall target="unzip">
++    <!--<antcall target="unzip">
+       <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+       <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
+       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+       <param name="dest_folder" value="${staging_folder}" />
+     </antcall>
+     <copy file="linux/libastylej-2.05.1/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
+-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
++    <chmod perm="755" file="linux/work/lib/libastylej.so" />-->
+ 
+     <antcall target="portable-${portable}">
+       <param name="parentdir" value="linux/work" />
+@@ -681,14 +681,14 @@
+   </target>
+ 
+   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
+-    <antcall target="unzip">
++    <!--<antcall target="unzip">
+       <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+       <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
+       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+       <param name="dest_folder" value="${staging_folder}" />
+     </antcall>
+     <copy file="linux/libastylej-2.05.1/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
+-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
++    <chmod perm="755" file="linux/work/lib/libastylej.so" />-->
+ 
+     <antcall target="portable-${portable}">
+       <param name="parentdir" value="linux/work" />
+@@ -724,14 +724,14 @@
+   </target>
+ 
+   <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
+-    <antcall target="unzip">
++    <!--<antcall target="unzip">
+       <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+       <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
+       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+       <param name="dest_folder" value="${staging_folder}" />
+     </antcall>
+     <copy file="linux/libastylej-2.05.1/libastylej_aarch64.so" tofile="linux/work/lib/libastylej.so" />
+-    <chmod perm="755" file="linux/work/lib/libastylej.so" />
++    <chmod perm="755" file="linux/work/lib/libastylej.so" />-->
+ 
+     <antcall target="portable-${portable}">
+       <param name="parentdir" value="linux/work" />

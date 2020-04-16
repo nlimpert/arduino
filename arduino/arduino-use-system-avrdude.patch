@@ -1,0 +1,25 @@
+diff --git a/hardware/avr/platform.txt b/hardware/avr/platform.txt
+index 608ad29..6c4aaa6 100644
+--- a/hardware/avr/platform.txt
++++ b/hardware/avr/platform.txt
+@@ -18,6 +18,7 @@ compiler.warning_flags.more=-Wall
+ compiler.warning_flags.all=-Wall -Wextra
+ 
+ # Default "compiler.path" is correct, change only if you want to override the initial value
++runtime.tools.avr-gcc.path=/usr
+ compiler.path={runtime.tools.avr-gcc.path}/bin/
+ compiler.c.cmd=avr-gcc
+ compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects
+@@ -91,9 +92,9 @@ recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {
+ # AVR Uploader/Programmers tools
+ # ------------------------------
+ 
+-tools.avrdude.path={runtime.tools.avrdude.path}
+-tools.avrdude.cmd.path={path}/bin/avrdude
+-tools.avrdude.config.path={path}/etc/avrdude.conf
++tools.avrdude.path=/
++tools.avrdude.cmd.path={path}usr/bin/avrdude
++tools.avrdude.config.path={path}etc/avrdude/avrdude.conf
+ 
+ tools.avrdude.network_cmd={runtime.tools.arduinoOTA.path}/bin/arduinoOTA
+ 

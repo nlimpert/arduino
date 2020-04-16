@@ -1,0 +1,87 @@
+diff --git a/build/linux/dist/arduino b/build/linux/dist/arduino
+index f70c6508..fe88828f 100755
+--- a/build/linux/dist/arduino
++++ b/build/linux/dist/arduino
+@@ -1,36 +1,62 @@
+-#!/usr/bin/env bash
++#!/usr/bin/bash
++
++APPDIR="/usr/share/arduino"
++
++if [[ `id -u` -ne 0 ]]; then
++    for group in dialout lock; do
++        if ! groups $USER | grep -q " : .*\b$group\b"; then
++            missing_groups="$missing_groups\n$group"
++        fi
++    done
++    if [[ -n $missing_groups ]] && zenity --title=Arduino --window-icon=/usr/share/icons/hicolor/16x16/apps/arduino.png --question --text "You need to be a member of the following groups to upload code to an Arduino microcontroller over the USB or serial ports:\n$missing_groups" --ok-label='Add' --cancel-label='Ignore'; then
++        pkexec /usr/libexec/arduino-add-groups \
++        && zenity --title=Arduino --window-icon=/usr/share/icons/hicolor/16x16/apps/arduino.png --info --text "You must log out and log in again before any changes will take effect."
++    fi
++fi
+ 
+-APPDIR="$(dirname -- "$(readlink -f -- "${0}")" )"
++source /usr/share/java-utils/java-functions
++
++set_classpath \
++    batik \
++    bcpg \
++    bcprov \
++    commons-codec \
++    commons-compress \
++    commons-exec \
++    commons-httpclient \
++    commons-io \
++    commons-lang3 \
++    commons-logging \
++    commons-net \
++    jackson-annotations \
++    jackson-core \
++    jackson-databind \
++    jmdns \
++    jsch \
++    jsemver \
++    jssc \
++    objectweb-asm \
++    rsyntaxtextarea \
++    slf4j \
++    xml-commons-apis-ext \
++    xmlgraphics-commons \
+ 
+ for LIB in \
+-    "$APPDIR"/java/lib/rt.jar \
+-    "$APPDIR"/java/lib/tools.jar \
+     "$APPDIR"/lib/*.jar \
++    /usr/share/java/jackson-modules/jackson-module-mrbean.jar \
++    /usr/share/java/log4j/log4j-api.jar \
++    /usr/share/java/log4j/log4j-core.jar \
+     ;
+ do
+     CLASSPATH="${CLASSPATH}:${LIB}"
+ done
+ export CLASSPATH
+ 
+-LD_LIBRARY_PATH=$APPDIR/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+-export LD_LIBRARY_PATH
+-
+-export PATH="${APPDIR}/java/bin:${PATH}"
+-
+-export JAVA_TOOL_OPTIONS=`echo $JAVA_TOOL_OPTIONS | sed 's|-javaagent:/usr/share/java/jayatanaag.jar||g'`
+-
+-JAVA=java
+-if [ -x "$APPDIR/java/bin/java" ]; then
+-  JAVA=$APPDIR/java/bin/java
+-fi
+-
+-# Collect options to java in an array, to properly handle whitespace in options
+ JAVA_OPTIONS=("-DAPP_DIR=$APPDIR")
+ 
+-# Only show the splash screen when no options are present
+ if [[ "$@" != *"--"* ]] ; then
+-	JAVA_OPTIONS+=("-splash:$APPDIR/lib/splash.png")
++    JAVA_OPTIONS+=("-splash:$APPDIR/lib/splash.png")
+ fi
+ 
+-"$JAVA" "${JAVA_OPTIONS[@]}" processing.app.Base "$@"
++java "${JAVA_OPTIONS[@]}" processing.app.Base "$@"
+ 
