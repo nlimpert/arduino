@@ -67,7 +67,7 @@ Patch3:         arduino-drop-macosx.patch
 Patch4:         arduino-wrapper.patch
 Patch5:         arduino-add-to-groups.patch
 Patch6:         arduino-fix-path-to-builder.patch
-Patch7:         arduino-fix-fresh-rsyntaxtextarea
+Patch7:         arduino-fix-fresh-rsyntaxtextarea.patch
 
 BuildRequires:  ant
 BuildRequires:  desktop-file-utils
