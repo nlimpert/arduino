@@ -1,0 +1,13 @@
+diff --git a/app/src/processing/app/syntax/SketchTextAreaDefaultInputMap.java b/app/src/processing/app/syntax/SketchTextAreaDefaultInputMap.java
+index 126d684..5392655 100644
+--- a/app/src/processing/app/syntax/SketchTextAreaDefaultInputMap.java
++++ b/app/src/processing/app/syntax/SketchTextAreaDefaultInputMap.java
+@@ -14,7 +14,7 @@ import java.awt.event.KeyEvent;
+ public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMap {
+ 
+   public SketchTextAreaDefaultInputMap() {
+-    int defaultModifier = getDefaultModifier();
++    int defaultModifier = RTextArea.getDefaultModifier();
+     int ctrl = InputEvent.CTRL_MASK;
+     int alt = InputEvent.ALT_MASK;
+     int shift = InputEvent.SHIFT_MASK;

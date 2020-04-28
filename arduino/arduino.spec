@@ -29,7 +29,7 @@
 Name:           arduino
 Epoch:          1
 Version:        1.8.12
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        An IDE for Arduino-compatible electronics prototyping platforms
 
 License:        GPLv2+ and LGPLv2+ and CC-BY-SA
@@ -67,6 +67,7 @@ Patch3:         arduino-drop-macosx.patch
 Patch4:         arduino-wrapper.patch
 Patch5:         arduino-add-to-groups.patch
 Patch6:         arduino-fix-path-to-builder.patch
+Patch7:         arduino-fix-fresh-rsyntaxtextarea
 
 BuildRequires:  ant
 BuildRequires:  desktop-file-utils
@@ -193,6 +194,7 @@ tar -xvf %{SOURCE10} -C hardware
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 cp %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} %{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} %{SOURCE26} %{SOURCE27} %{SOURCE28} %{SOURCE29} build/
 cp %{SOURCE50} %{SOURCE51} build/shared/
@@ -350,6 +352,9 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/*.appdata
 
 
 %changelog
+* Tue Apr 28 2020 ElXreno <elxreno@gmail.com> - 1:1.8.12-3
+- Fixed running with fresh rsyntaxtextarea library
+
 * Thu Apr 16 2020 ElXreno <elxreno@gmail.com> - 1:1.8.12-2
 - Added doc subpackage to requires
 
