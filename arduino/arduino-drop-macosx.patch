@@ -1,5 +1,5 @@
 diff --git a/app/src/processing/app/Base.java b/app/src/processing/app/Base.java
-index 815f264d..1ebfa540 100644
+index cdac3059f..ef6701a47 100644
 --- a/app/src/processing/app/Base.java
 +++ b/app/src/processing/app/Base.java
 @@ -53,7 +53,6 @@ import processing.app.helpers.filefilters.OnlyDirs;
@@ -17,7 +17,7 @@ index 815f264d..1ebfa540 100644
 -    if (OSUtils.isMacOS()) {
 -      System.setProperty("apple.laf.useScreenMenuBar",
 -        String.valueOf(!System.getProperty("os.version").startsWith("10.13")
--          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+-          || isMacOsAboutMenuItemPresent()));
 -
 -      ThinkDifferent.init();
 -    }
@@ -25,8 +25,20 @@ index 815f264d..1ebfa540 100644
      try {
        INSTANCE = new Base(args);
      } catch (Throwable e) {
+@@ -154,11 +145,6 @@ public class Base {
+     }
+   }
+ 
+-  @SuppressWarnings("deprecation")
+-  public static boolean isMacOsAboutMenuItemPresent() {
+-    return com.apple.eawt.Application.getApplication().isAboutMenuItemPresent();
+-  }
+-
+   static public void initLogger() {
+     Handler consoleHandler = new ConsoleLogger();
+     consoleHandler.setLevel(Level.ALL);
 diff --git a/app/src/processing/app/EditorToolbar.java b/app/src/processing/app/EditorToolbar.java
-index d37d0cc9..8cfbee31 100644
+index a2a9b804e..703547d6b 100644
 --- a/app/src/processing/app/EditorToolbar.java
 +++ b/app/src/processing/app/EditorToolbar.java
 @@ -27,10 +27,6 @@ import javax.imageio.ImageIO;
@@ -54,11 +66,10 @@ index d37d0cc9..8cfbee31 100644
  
    private int buttonCount;
    private int[] state = new int[BUTTON_COUNT];
-@@ -149,61 +142,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
-     bgcolor = Theme.getColor("buttons.bgcolor");
+@@ -150,61 +143,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
      statusFont = Theme.getFont("buttons.status.font");
      statusColor = Theme.getColor("buttons.status.color");
--
+ 
 -    if (OSUtils.isMacOS() && VersionComparator.greaterThanOrEqual(OSUtils.version(), "10.12")) {
 -      editor.addWindowListener(new WindowAdapter() {
 -        public void windowActivated(WindowEvent e) {
@@ -70,12 +81,12 @@ index d37d0cc9..8cfbee31 100644
 -        }
 -      });
 -    }
-     
+-    
      addMouseListener(this);
      addMouseMotionListener(this);
      KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
    }
--  
+   
 -  private void buildTouchBar() {
 -    if (touchBarImages == null) {
 -      loadTouchBarImages();
@@ -113,14 +124,14 @@ index d37d0cc9..8cfbee31 100644
 -      touchBar.addItem(touchBarItem);
 -    }
 -  }
- 
+-
    private void loadButtons() {
      Image allButtons = Theme.getThemeImage("buttons", this,
-@@ -224,36 +167,6 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
-       }
+                                            BUTTON_IMAGE_SIZE * BUTTON_COUNT,
+@@ -225,36 +168,6 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
      }
    }
--  
+   
 -  private void loadTouchBarImages() {
 -    Image allButtonsRetina = Theme.getThemeImage("buttons", this,
 -                                           BUTTON_IMAGE_SIZE * BUTTON_COUNT * 2,
@@ -150,14 +161,14 @@ index d37d0cc9..8cfbee31 100644
 -      }
 -    }
 -  }
- 
+-
    @Override
    public void paintComponent(Graphics screen) {
-@@ -402,15 +315,6 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
-     if (updateAfter) {
+     // this data is shared by all EditorToolbar instances
+@@ -403,14 +316,6 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
        repaint();
      }
--    
+     
 -    if (touchBarButtons != null) { 
 -      if (newState == INACTIVE) {
 -        // use ROLLOVER state when INACTIVE
