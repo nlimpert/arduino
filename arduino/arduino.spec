@@ -2,6 +2,7 @@
 
 %global appstream_id cc.arduino.arduinoide
 
+%global arduino_examples_version 1.9.1
 %global avr_version 1.8.2
 %global ethernet_version 2.0.0
 %global gsm_version 1.0.6
@@ -24,11 +25,11 @@
 %global adafruit_version 1.10.4
 
 %global reference_version 1.6.6-3
-%global wifi_firmware_updater_version 0.10.10
+%global wifi_firmware_updater_version 0.12.0
 
 Name:           arduino
 Epoch:          1
-Version:        1.8.12
+Version:        1.8.19
 Release:        3%{?dist}
 Summary:        An IDE for Arduino-compatible electronics prototyping platforms
 
@@ -57,18 +58,20 @@ Source27:       https://github.com/arduino-libraries/Servo/archive/%{servo_versi
 Source28:       https://github.com/arduino-libraries/LiquidCrystal/archive/%{liquidcrystal_version}/LiquidCrystal-%{liquidcrystal_version}.zip
 Source29:       https://github.com/Adafruit/Adafruit_CircuitPlayground/archive/%{adafruit_version}/Adafruit_Circuit_Playground-%{adafruit_version}.zip
 
+Source30:       https://github.com/arduino/arduino-examples/archive/refs/tags/%{arduino_examples_version}.zip
+
 Source50:       https://downloads.arduino.cc/reference-%{reference_version}.zip
 Source51:       https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v%{wifi_firmware_updater_version}/WiFi101-Updater-ArduinoIDE-Plugin-%{wifi_firmware_updater_version}.zip
 
 Patch0:         arduino-use-system-avrdude.patch
-Patch1:         arduino-use-system-astyle.patch
-Patch2:         arduino-use-system-libserialport.patch
-Patch3:         arduino-drop-macosx.patch
-Patch4:         arduino-wrapper.patch
-Patch5:         arduino-add-to-groups.patch
-Patch6:         arduino-fix-path-to-builder.patch
-Patch7:         arduino-fix-fresh-rsyntaxtextarea.patch
-
+Patch1:         arduino-drop-macosx.patch
+Patch2:         arduino-fix-fresh-rsyntaxtextarea.patch
+Patch3:         arduino-use-system-astyle.patch
+Patch4:         arduino-use-system-libserialport.patch
+Patch5:         arduino-wrapper.patch
+Patch6:         arduino-add-to-groups.patch
+Patch7:         arduino-fix-path-to-builder.patch
+#
 BuildRequires:  ant
 BuildRequires:  desktop-file-utils
 BuildRequires:  libappstream-glib
@@ -78,7 +81,6 @@ BuildRequires:  java-devel
 BuildRequires:  mvn(com.fasterxml.jackson.core:jackson-annotations)
 BuildRequires:  mvn(com.fasterxml.jackson.core:jackson-core)
 BuildRequires:  mvn(com.fasterxml.jackson.core:jackson-databind)
-#BuildRequires:  mvn(com.fasterxml.jackson.module:jackson-module-mrbean)
 BuildRequires:  mvn(com.fasterxml.jackson.module:jackson-modules-base:pom:)
 BuildRequires:  mvn(com.fifesoft:rsyntaxtextarea)
 BuildRequires:  mvn(com.github.zafarkhaja:java-semver)
@@ -131,7 +133,7 @@ Requires:       mvn(apache:commons-httpclient)
 Requires:       mvn(com.fasterxml.jackson.core:jackson-annotations)
 Requires:       mvn(com.fasterxml.jackson.core:jackson-core)
 Requires:       mvn(com.fasterxml.jackson.core:jackson-databind)
-Requires:       mvn(com.fasterxml.jackson.module:jackson-module-mrbean)
+Requires:       mvn(com.fasterxml.jackson.module:jackson-modules-base:pom:)
 Requires:       mvn(com.fifesoft:rsyntaxtextarea)
 Requires:       mvn(com.github.zafarkhaja:java-semver)
 Requires:       mvn(com.jcraft:jsch)
@@ -198,6 +200,7 @@ tar -xvf %{SOURCE10} -C hardware
 %patch7 -p1
 
 cp %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{SOURCE15} %{SOURCE16} %{SOURCE17} %{SOURCE18} %{SOURCE19} %{SOURCE20} %{SOURCE21} %{SOURCE22} %{SOURCE23} %{SOURCE24} %{SOURCE25} %{SOURCE26} %{SOURCE27} %{SOURCE28} %{SOURCE29} build/
+mv %{SOURCE30} build/arduino-examples-%{arduino_examples_version}.zip
 cp %{SOURCE50} %{SOURCE51} build/shared/
 
 # Remove Windows and OSX specific code
