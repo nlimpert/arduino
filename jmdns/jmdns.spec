@@ -1,11 +1,11 @@
 Name:           jmdns
-Version:        3.5.5
+Version:        3.5.7
 Release:        1%{?dist}
 Summary:        Java implementation of multi-cast DNS
 
 License:        ASL 2.0
 URL:            https://github.com/jmdns/jmdns
-Source0:        %{url}/archive/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source0:        %{url}/archive/refs/tags/%{version}.tar.gz
 
 BuildRequires:  maven-local
 BuildRequires:  mvn(org.apache.felix:maven-bundle-plugin)
@@ -21,7 +21,7 @@ with Apple's Bonjour.
 
 
 %prep
-%autosetup -n %{name}-%{name}-%{version} -p1
+%autosetup -n %{name}-%{version} -p1
 
 # Remove duplicate jar execution
 %pom_xpath_remove "pom:plugin[pom:artifactId='maven-jar-plugin']/pom:executions"
